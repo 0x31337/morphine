@@ -1,0 +1,8 @@
+{
+    "require": {
+        "cboden/ratchet": "^0.4.4",
+        "textalk/websocket": "^1.5",
+        "react/event-loop": "^1.5",
+        "ratchet/pawl": "^0.4.1"
+    }
+}
