@@ -36,7 +36,8 @@ Morphine adopts a clean and efficient design pattern:
 
 Each layer has a clear responsibility, which enforces separation of concerns and improves testability.
 
-Please refer to this [whitepaper](https://github.com/user-attachments/files/21241161/whitepaper.pdf) to know MORE.
+You can read the [whitepaper](https://github.com/user-attachments/files/21241161/whitepaper.pdf) that introduces MORE architecture.
+
 ---
 
 ## Directory Structure
