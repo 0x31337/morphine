@@ -1,3 +1,6 @@
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/cafab220-2104-44b3-9893-44de2178e8d6" width="600" alt="Morphine Logo"/>
+</p>
 # Morphine PHP Framework
 
 **Morphine** is a modern, minimalist PHP framework designed for developers who want the clarity of raw PHP, but with the structure, power, and security of a well-designed backend system. Whether you're building a CMS, a dashboard, or a full web application, Morphine offers a scalable foundation with zero learning curve bloat.
