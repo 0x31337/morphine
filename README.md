@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/cafab220-2104-44b3-9893-44de2178e8d6" width="600" alt="Morphine Logo"/>
+  <img src="https://github.com/user-attachments/assets/cafab220-2104-44b3-9893-44de2178e8d6" width="400" alt="Morphine Logo"/>
 </p>
 
 ## Morphine PHP Framework
