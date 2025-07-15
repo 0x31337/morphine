@@ -1,85 +1,115 @@
 # ⚡ Morphine Framework
 
-**Morphine** is a lightweight, extensible PHP framework built with clarity, performance, and modern backend architectures in mind. Designed for professionals, researchers, and developers who prioritize maintainable code and speed, Morphine offers a refreshing alternative to traditional MVC frameworks.
+**Morphine** is a lightweight, high-performance PHP framework that prioritizes clarity, speed, and maintainability. With an architecture inspired by modern software engineering principles, Morphine offers a refreshing approach to web development — simpler than raw PHP, but lighter and more intuitive than traditional frameworks like Laravel or Symfony.
 
-> “Built for the next generation of dashboards, systems, and backend intelligence platforms.”
-
----
-
-## 🚀 Why Morphine?
-
-- 🔧 **Clean Architecture (M.O.R.E.)** — Separate read/write/view logic for unmatched clarity and modularity.
-- ⚡ **Performance-Driven** — No unnecessary dependencies or heavy abstractions.
-- 🎯 **Purpose-Built** — Ideal for control panels, internal tools, and surveillance systems.
-- 🧠 **Academically Inspired** — Created with research, clarity, and long-term maintainability in mind.
-- 🎨 **Powerful Theming** — Native support for templates, conditional rendering, and iterable views.
+Whether you’re building a CMS, admin panel, REST API, dashboard, or academic research tool — Morphine helps you move fast, write clean code, and stay in full control.
 
 ---
 
-## 🧠 The M.O.R.E. Philosophy
+## ✨ Why Morphine?
 
-Morphine’s foundation is its **M.O.R.E.** design pattern:
-- **Models** — Handle all data retrieval operations.
-- **Operations** — Manage all mutations, writes, and I/O tasks.
-- **Renders** — Abstract the rendering process between backend logic and frontend templates.
-- **Events** — Act as the dynamic backbone that routes, triggers, and orchestrates application behavior.
+- 🧠 **M.O.R.E. Architecture** — A clear separation between Models, Operations, Renders, and Events for improved readability and maintainability.
+- 🔐 **Security First** — Designed with secure defaults, guardrails against common mistakes, and guidance to prevent unsafe coding practices.
+- ⚡ **No Boilerplate Overhead** — Simple to set up, fast to execute, and easy to understand.
+- 🎨 **Powerful Theming System** — Native templating with support for partials, iterables, and conditionals without third-party dependencies.
+- 🛠 **CLI Tools Included** — Ship faster with built-in command-line tooling for setup, asset packaging, and installation.
 
-This separation enforces clean, testable code and reduces long-term complexity in medium to large projects.
+---
+
+## 🧠 M.O.R.E. Design Pattern
+
+Morphine is built around the **M.O.R.E.** architecture:
+
+| Layer      | Responsibility                                     |
+|------------|-----------------------------------------------------|
+| **Models**     | Retrieve and query data from the database or other sources |
+| **Operations** | Perform I/O operations, mutations, insertions, deletions    |
+| **Renders**    | Bind backend logic to frontend views and templates         |
+| **Events**     | Dynamically control routing, execution flow, and states    |
+
+This pattern keeps responsibilities distinct, scalable, and testable — perfect for long-term growth or collaboration.
+
+---
+
+## 🔐 Security by Design
+
+Security is not an afterthought. Morphine includes:
+
+- Guard clauses in CLI to prevent insecure DB setups
+- Strict globals initialization to avoid accidental overrides
+- Protected access to internal engine components
+- Input helpers and sanitization tools for safe request handling
+
+---
+
+## 🖥 Built-In CLI Interface
+
+Morphine ships with a powerful but minimal CLI (`morph`) to assist with setup and packaging:
+
+```bash
+php morph.php
+```
+
+Supported commands:
+
+- `install` – Set up your database with guided input and automatic validation
+- `list` – Show available CLI commands
+- `pack` – (In progress) Prepare your app for deployment
+- `exit` – Quit the CLI
+
+The CLI ensures secure configurations by validating usernames, passwords, and database names during install — preventing dangerous reuse patterns.
+
+---
+
+## 🧱 Project Structure
+
+```
+morphine/
+├── application/        # Your app lives here
+│   ├── models/         # Data retrieval logic
+│   ├── operations/     # Data mutations and I/O
+│   ├── views/          # PHP classes tied to templates
+│   ├── themes/         # Templated HTML + theme assets
+│   └── assets/         # Global CSS, JS, images
+├── base/               # Framework core
+│   └── morphine/       # Engine, rendering, database, routing
+├── index.php           # App entry point
+└── base/cli/           # Morphine CLI and tools
+```
 
 ---
 
 ## 🌐 Use Cases
 
-- Admin panels and dashboards
-- Internal monitoring/control tools
-- Secure backend services for native/mobile apps
-- Academic research platforms
-- Real-time data visualization with WebSocket support
+- Content Management Systems (CMS)
+- Dashboards & admin panels
+- WebSocket-enabled control panels
+- Internal tools & utilities
+- Research-oriented web applications
 
 ---
 
-## ✨ Core Highlights
-
-- 📁 Dual-layer project layout (`/base` for core, `/application` for dev)
-- 🖼 Built-in rendering engine with layered views and template conventions
-- ⚙️ Dependency-light and easy to deploy
-- 🔌 Hook-ready event system for plugin-style extensibility
-- 🧩 Modular CLI tooling for automation and integration
-- 🔒 Security utilities included by design
-
----
-
-## 🔗 Join the Ecosystem
-
-Morphine is engineered for clarity and openness. Whether you're building the next great internal app, writing academic papers, or pushing security dashboards to production — Morphine empowers you to move fast without sacrificing structure.
-
-We welcome contributors, researchers, plugin developers, and curious engineers.
-
----
-
-## 📘 Documentation
-
-Full documentation and tutorials coming soon at:
-
-📖 [morphine-framework.dev](https://morphine-framework.dev) *(placeholder)*
-
----
-
-## 🛠 Get Started
+## 🚀 Getting Started
 
 ```bash
 git clone https://github.com/your-org/morphine
-cd morphine
-php -S localhost:8080
+cd morphine/base/cli
+php morph.php install
 ```
 
 ---
 
 ## 📄 License
 
-Morphine is released under the MIT License. Use it freely in personal, academic, or commercial projects.
+Morphine is released under the **MIT License** — free for personal, commercial, and academic use.
 
 ---
 
-## 🧪 Designed by developers, perfected for researchers.
+## 🤝 Contributing
+
+Morphine is young, growing, and open to contributors. If you’re passionate about backend architecture, security, or CLI tools, we’d love to hear from you.
+
+---
+
+> “Morphine is not just a framework — it's an approach to backend clarity, control, and composability.”
 
