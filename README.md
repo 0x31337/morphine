@@ -1,136 +1,131 @@
 # ⚙️ Morphine Framework
 
-**Morphine** is a clean, fast, and extensible PHP framework designed for modern backend dashboards, surveillance panels, and internal tools — without Laravel’s bloat.  
-It follows the **M.O.R.E. architecture**: `Models`, `Operations`, `Renders`, and `Events`, ensuring logical separation of functionality and ease of extension.
+**Morphine** is a fast, modular, and academically-oriented PHP framework built for backend dashboards, surveillance systems, and internal tooling.  
+It is designed with the **M.O.R.E.** architecture in mind — offering a logical and maintainable alternative to bulky frameworks like Laravel.
 
-> “Inject Morphine into your workflow — eliminate the pain of slow, bloated frameworks.”
+> “Inject Morphine into your workflow — eliminate the pain of bloated development.”
 
 ---
 
 ## 🧠 Architecture: M.O.R.E.
 
-| Component   | Purpose                                                      |
-|------------|--------------------------------------------------------------|
-| `Models`   | Retrieve data from the database or other sources             |
-| `Operations` | Mutate, insert, delete data or trigger heavy I/O processes |
-| `Renders`  | Smart view controllers that bind templates with data         |
-| `Events`   | Define user events, system hooks, routing & interaction flow |
+| Component   | Role                                                                 |
+|------------|----------------------------------------------------------------------|
+| `Models`   | Read data from databases or external sources                         |
+| `Operations` | Mutate, insert, or delete data; also for aggressive I/O operations |
+| `Renders`  | Handle view logic and link template data                             |
+| `Events`   | System routing, dispatching, and behavioral hooks                    |
 
-This design promotes modularity, security, and maintainability — ideal for clean project scaling and academic-grade system design.
+This architecture ensures **modularity**, **security**, and **ease of contribution**, making it ideal for both production and academic environments.
 
 ---
 
-## 📂 Project Structure
+## 📁 Project Structure
 
+```
 morphine/
-├── application/ # User-level code (your sandbox)
-│ ├── assets/ # Global static files
-│ ├── models/ # Data readers (Model Layer)
-│ ├── operations/ # Mutators / I/O operations
-│ ├── views/ # View controllers (Render Layer)
-│ └── themes/ # Theme-based HTML templates
-├── base/ # Morphine Core (Engine)
-│ ├── engine/ # Core systems: DB, Security, Autoloader
-│ ├── events/ # Routing, Pages, Listeners
-│ └── renders/ # View abstraction layer
-└── index.php # Entry point
-
-
----
-
-## 📐 Template & View Conventions
-
-- Templates reside in `themes/{themeName}/{viewName}/`
-- Naming follows semantic conventions:
-  - `viewname.tpl.html` — Main view template
-  - `viewname.iterable.tpl.html` — For repeating components
-  - `viewname.conditional.tpl.html` — Conditionally-rendered blocks
-  - `viewname.CustomName.tpl.html` — Specific-purpose blocks
-
-Each View has a matching PHP class (`views/`) that inherits from `Handler`, declaring:
-- Main view
-- Partial views
-- Data-binding logic
-- Input rendering (if applicable)
+├── application/
+│   ├── assets/          # Global JS/CSS/img files
+│   ├── models/          # Data readers (Models)
+│   ├── operations/      # Writers, mutators, file handlers (Operations)
+│   ├── views/           # View classes extending the Handler
+│   └── themes/          # HTML templates grouped by theme
+├── base/
+│   ├── engine/          # Core logic (DB, autoloaders, renders, security)
+│   ├── events/          # Routing, dispatching, and hooks
+│   └── renders/         # Rendering abstractions
+└── index.php            # Application entry point
+```
 
 ---
 
-## ✨ Features
+## 🖼 Template Naming Conventions
 
-- ✅ **M.O.R.E. Architecture** — Clear roles for each component  
-- ⚡ **Lightweight & Fast** — Minimal dependencies, fast boot time  
-- 🎨 **Themable** — UI rendering is decoupled from logic  
-- 🔄 **Global & Theme-specific Assets**  
-- 🔌 **Hooks and Extensibility** for plugin developers  
-- 🛠️ **CLI Support** via `base/cli/` for automation
+- `viewname.tpl.html` → Main template
+- `viewname.iterable.tpl.html` → Loop rendering
+- `viewname.conditional.tpl.html` → Conditional blocks
+- `viewname.CustomName.tpl.html` → Specialized blocks
 
----
-
-## 🆚 Why Not Laravel?
-
-| Feature                    | Morphine                    | Laravel                   |
-|---------------------------|-----------------------------|---------------------------|
-| Design Philosophy         | Logic-first (M.O.R.E.)      | Opinionated (MVC)         |
-| Learning Curve            | Low                         | Moderate                  |
-| Dashboard-oriented        | Built-in                    | Requires external packages|
-| Template Engine           | Native HTML + placeholders  | Blade (custom syntax)     |
-| Overhead / Dependencies   | Minimal                     | Heavy                     |
-| Academic Transparency     | Full                        | Abstracted                |
-
-Morphine is built to be **learnable**, **extensible**, and **analyzable** — perfect for academic projects, security platforms, or rapid prototyping.
+Each template has a corresponding PHP class in `application/views/` that follows a structured pattern:
+- `set_main_view()`
+- `set_partial_views()`
+- `set_views_data()`
+- `load_data_models()`
+- `load_input_views()`
 
 ---
 
-## 🔧 Quickstart
+## ✨ Key Features
+
+- ✅ **Clear architecture (M.O.R.E.)**
+- ⚡ **Lightweight & fast loading**
+- 🎨 **Themable design**
+- 🔌 **Hookable & extensible**
+- 🔒 **Security-focused**
+- 🛠 **CLI utilities available in `/base/cli/`**
+
+---
+
+## 🆚 Morphine vs Laravel
+
+| Feature                     | Morphine              | Laravel               |
+|----------------------------|------------------------|------------------------|
+| Design Philosophy          | M.O.R.E. (clean logic) | MVC (opinionated)     |
+| Template System            | Native HTML + Tags     | Blade (custom DSL)    |
+| Dependency Overhead        | Very low               | High                  |
+| Dashboard/App Focus        | Native support         | Requires packages     |
+| Educational Transparency   | Full                   | Abstracted            |
+| Performance                | High                   | Moderate              |
+
+---
+
+## 🚀 Quickstart
 
 ```bash
 git clone https://your-repo-url morphine
 cd morphine
 
-# Set entry point in globals.php:
-# $GLOBALS['App.EntryPoint'] = '/your/path';
+# Set your entry point in base/engine/globals.php:
+# $GLOBALS['App.EntryPoint'] = '/your/project/path';
 
-# Start writing:
-# - Define Models for reading data
-# - Write Operations for actions
-# - Create View classes and templates
-
-👨‍💻 Developer Guidelines
-
-    Use Models only to read data
-
-    Use Operations to mutate or delete data
-
-    Views should follow Handler structure and load corresponding .tpl.html
-
-    Avoid modifying the base/ engine unless you’re contributing to Morphine core
-
-    Use hooks and plugins for extending the core behavior
-
-🏆 Why Use Morphine for Your MSc or Company Project?
-
-    📜 Academic Alignment — Framework design emphasizes clarity, security boundaries, and separation of concerns
-
-    💼 Enterprise Fit — Suitable for dashboards, internal systems, and security consoles
-
-    📊 Whitepaper-Ready — Clean architecture facilitates documentation and research publishing
-
-    🧠 Deep Customizability — No magic, every file is yours to understand
-
-📘 License
-
-MIT License — use it, break it, fix it, share it.
-💬 Get Involved
-
-Contributions, plugins, themes, and ideas are welcome.
-Fork, star, and let’s build a painless PHP future together.
-
-    Morphine — built for developers who care about structure.
-
+# Start building:
+# - Define Models for reads
+# - Use Operations for writes/mutations
+# - Link templates through Views
+```
 
 ---
 
-Let me know if you'd like me to:
-- Add logo/badge artwork
-- Prepare a `CONTRIBUTING.md` or plugin system doc
-- Create a whitepaper abstract or documentation site (e.g., for GitHub Pages)
+## 🧭 Developer Guidelines
+
+- Only use **Models** for reading
+- Only use **Operations** for mutating or deleting
+- All Views must extend the `Handler` class
+- Do **not** touch core files in `/base/`
+- Use hooks & plugin API for extensibility
+- Global assets in `/application/assets`, theme-specific assets under `/themes/{theme}/assets`
+
+---
+
+## 🏛 Why Morphine for MSc or Enterprise Use?
+
+- 📜 **Academic Clarity** – Designed to be easily understood and documented
+- 🛡️ **Security-first** – Encourages separation of read/write responsibilities
+- 🧠 **Research-Ready** – Clean enough to base theses, whitepapers, or advanced research on
+- ⚙️ **Modular Design** – Developers contribute independently to Models, Ops, and Renders
+
+---
+
+## 📘 License
+
+MIT — Free to use, modify, and distribute.
+
+---
+
+## 💬 Contribute
+
+Got an idea, fix, or feature?  
+Fork the repo, make your changes, and submit a pull request.  
+Morphine is built for those who care about structure and clarity in their code.
+
+> Built for developers, researchers, and visionaries. Morphine: because backend development shouldn’t hurt.
