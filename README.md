@@ -110,6 +110,7 @@ Morphine is ideal for:
 - Real-time apps (WebSocket-ready)
 - Lightweight APIs
 - Secure enterprise tools
+- Full web application
 - Academic and research applications
 
 Its balance of simplicity and power makes it a strong choice for projects that need both clarity and control.
