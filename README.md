@@ -1,149 +1,120 @@
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/cafab220-2104-44b3-9893-44de2178e8d6" width="400" alt="Morphine Logo"/>
+  <img src="https://github.com/user-attachments/assets/cafab220-2104-44b3-9893-44de2178e8d6" width="300" alt="Morphine Logo">
 </p>
+
+<h1 align="center">Morphine PHP Framework</h1>
+
+<p align="center"><em>
+An elegant and secure PHP framework built on the MORE architecture — crafted for developers who value simplicity, structure, and control.
+</em></p>
+
 <p align="center">
-  <img src="https://camo.githubusercontent.com/00a356fe98791f7e0df660a28779e3c7bfea602b9265febe24897e0d28d98985/68747470733a2f2f696d672e736869656c64732e696f2f7061636b61676973742f6c2f6c61726176656c2f6672616d65776f726b" style="max-width: 100%;" alt="License"/>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
+  <img src="https://img.shields.io/github/stars/your-org/morphine?style=social" alt="GitHub stars">
+  <img src="https://img.shields.io/github/issues/your-org/morphine" alt="GitHub issues">
 </p>
 
-## Morphine PHP Framework
+---
 
-**Morphine** is a modern, minimalist PHP framework designed for developers who want the clarity of raw PHP, but with the structure, power, and security of a well-designed backend system. Whether you're building a CMS, a dashboard, or a full web application, Morphine offers a scalable foundation with zero learning curve bloat.
+## 🔍 What is Morphine?
+
+**Morphine** is a modern PHP framework designed to provide clarity without complexity. It rejects heavy abstractions and hidden behavior in favor of transparency and intentional design.
+
+At its core is the **MORE architecture** — a clean, logical alternative to MVC — which introduces a refined separation of concerns:  
+- **Models** for data access  
+- **Operations** for changes and side effects  
+- **Renders** for structured UI logic  
+- **Events** for routing and dispatch
+
+Whether you're building internal systems, custom platforms, educational tools, or secure web apps, Morphine gives you a clean foundation with powerful structure and minimal overhead.
 
 ---
 
-## Why Morphine?
+## 🧱 Core Principles
 
-Morphine offers what most developers need, and nothing they don’t:
+- **💡 Simplicity by Design**  
+  Morphine avoids bloated features and favors clarity. What you build is what you see.
 
-- ⚡ **Fast and lightweight** — No third-party dependencies, no overhead.
-- 🧠 **Thoughtful architecture** — Clear separation of responsibilities through the M.O.R.E. model.
-- 🔒 **Security-first** — Enforced safe practices, controlled globals, and credential integrity checks.
-- 🎯 **Easy to learn, easy to maintain** — No magic, no black boxes.
-- 🎨 **Powerful view system** — Flexible theming and templating built in.
-- 🧰 **CLI-ready** — Interactive CLI for setup, packaging, and management.
+- **🔐 Built-in Security**  
+  From setup to templating, Morphine prioritizes safety with strict boundaries and validation.
 
-You’ll spend more time building — not configuring or debugging framework quirks.
+- **📐 Predictable Architecture**  
+  Based on the MORE model, each component has a focused role, which keeps development logical and testable.
 
----
+- **🎓 Educational & Practical**  
+  Morphine is easy to adopt for newcomers and disciplined enough for production or academic work.
 
-## M.O.R.E. Architecture
-
-Morphine adopts a clean and efficient design pattern:
-
-| Layer      | Role                                    |
-|------------|-----------------------------------------|
-| **Models** | Read-only data retrieval                |
-| **Operations** | Write, update, delete, and I/O tasks   |
-| **Renders** | View classes that bind data to templates |
-| **Events**  | Handle routing, dispatching, and flow   |
-
-Each layer has a clear responsibility, which enforces separation of concerns and improves testability.
-
-You can read the [whitepaper](https://github.com/user-attachments/files/21241161/whitepaper.pdf) that introduces MORE architecture.
+- **🛠️ Ready Out of the Box**  
+  Lightweight CLI, zero external dependencies, and a theming system built around native HTML views.
 
 ---
 
-## Directory Structure
+## 🧠 Powered by the MORE Architecture
 
-```
-morphine/
-├── application/         # Userland code
-│   ├── models/          # Data access
-│   ├── operations/      # Logic + write actions
-│   ├── views/           # View controllers
-│   ├── themes/          # Templates + view assets
-│   └── assets/          # Global static resources
-├── base/                # Morphine core (do not edit)
-│   ├── morphine/        # Engine, routing, renderers, DB
-│   └── cli/             # Morph shell (interactive CLI)
-└── index.php            # Entry point
-```
+Morphine is the first real-world implementation of the **MORE** architectural model — a design pattern introduced to simplify and modernize backend PHP development.
 
-This structure keeps your logic and view layer strictly separated from the core engine, reducing complexity and accidental coupling.
+| Layer         | Responsibility                            |
+|---------------|--------------------------------------------|
+| **Models**     | Safe, read-only access to data sources     |
+| **Operations** | Write logic and side-effect isolation      |
+| **Renders**    | Bind data to views with no logic in HTML   |
+| **Events**     | Handle routing, HTTP flow, or dispatch     |
+
+> 📖 [Read the MORE Whitepaper (PDF)](https://github.com/user-attachments/files/21241161/whitepaper.pdf)
 
 ---
 
-## Theming & Views
+## ✨ Why Developers Choose Morphine
 
-Morphine includes a powerful templating system:
-
-- `.tpl.html` files live in theme folders
-- You can create:
-  - `viewname.tpl.html` (standard)
-  - `viewname.iterable.tpl.html` (repeatable items)
-  - `viewname.conditional.tpl.html` (conditional views)
-  - `viewname.SomeName.tpl.html` (precise override/variant)
-
-View controllers bind your backend data with these templates, using a clearly defined structure for extensibility and reuse.
+- ✅ **No steep learning curve** — built with clarity and consistency
+- ✅ **No vendor lock-in** — works with native HTML, no templating engines
+- ✅ **No magic** — predictable behavior and fully visible execution flow
+- ✅ **No clutter** — core engine is minimal, application code is clean
+- ✅ **No compromise** — modern standards, security, and real-world use cases
 
 ---
 
-## Security by Default
+## 🛠 Use Cases
 
-Morphine is designed with cautious, production-grade defaults:
+Morphine is suitable for a wide range of applications, including:
 
-- No automatic global injection
-- Sanitization functions integrated
-- CLI prevents weak credentials
-- Views and templates do not execute logic
-- Strict separation of user input and business logic
-
-This enables you to move faster without compromising the integrity of your applications.
-
----
-
-## CLI Shell
-
-Morphine ships with a built-in, interactive command-line interface:
-
-```bash
-php base/cli/morph.php
-```
-
-Available commands:
-- `install` — Set up database and configurations securely
-- `pack` — (Coming soon) Bundle your project for deployment
-- `list` — Show all commands
-- `exit` — Close the shell
-
-Each step includes guidance and built-in validation to ensure safety and correctness.
+- Custom dashboards and portals  
+- Content management systems (CMS)  
+- Lightweight APIs  
+- Educational projects and academic tools  
+- Internal enterprise systems  
+- Proof-of-concept platforms and secure experiments  
 
 ---
 
-## Use Cases
+## 🚀 Quick Start
 
-Morphine is ideal for:
+1. Clone the repository  
+2. Run the built-in CLI to configure and install  
+3. Begin building — your structure is already in place
 
-- CMS platforms
-- Internal dashboards
-- Real-time apps (WebSocket-ready)
-- Lightweight APIs
-- Secure enterprise tools
-- Full web application
-- Academic and research applications
-
-Its balance of simplicity and power makes it a strong choice for projects that need both clarity and control.
+For installation, requirements, and usage walkthroughs, visit the [Documentation Wiki](https://github.com/your-org/morphine/wiki) (coming soon).
 
 ---
 
-## Getting Started
+## 📚 Resources
 
-```bash
-git clone https://github.com/your-org/morphine
-cd morphine/base/cli
-php morph.php install
-```
-
-After configuration, point your web server to `index.php`.
+- [MORE Architecture Whitepaper (PDF)](https://github.com/user-attachments/files/21241161/whitepaper.pdf)  
+- Morphine CLI Setup Guide (soon)  
+- Example Projects & Tutorials (soon)
 
 ---
 
-## License
+## 📄 License
 
-MIT — Free to use, modify, and distribute.
+Released under the [MIT License](https://opensource.org/licenses/MIT).  
+You are free to use, modify, and distribute Morphine in personal or commercial projects.
 
 ---
 
-## Final Thoughts
+## 💬 Final Thoughts
 
-Morphine isn’t here to compete on buzzwords. It’s here to simplify PHP development with a codebase that’s **readable**, **modular**, and **secure by design**. If you've ever wanted a framework that **works with you**, not against you — Morphine is what you've been looking for.
+Morphine is not another framework trying to compete on trendiness.  
+It’s a **purpose-built tool for clarity**, structure, and long-term maintainability — with a design that respects the developer’s need for control and simplicity.
+
+If you've ever wished PHP frameworks were more readable, more secure, and less bloated — **Morphine is what you've been waiting for.**
