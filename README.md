@@ -93,7 +93,7 @@ Morphine is suitable for a wide range of applications, including:
 2. Run the built-in CLI to configure and install  
 3. Begin building — your structure is already in place
 
-For installation, requirements, and usage walkthroughs, visit the [Documentation Wiki](https://github.com/your-org/morphine/wiki) (coming soon).
+For installation, requirements, and usage walkthroughs, visit the [Documentation Wiki](https://github.com/0x31337/morphine/wiki) (coming soon).
 
 ---
 
