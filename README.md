@@ -7,9 +7,9 @@
 <p align="center"><em>
 An elegant and secure PHP framework built on the MORE architecture — crafted for developers who value simplicity, structure, and control.
 </em></p>
-
 <p align="center">
-  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
+  <a href="https://doi.org/10.5281/zenodo.15977823"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.15977823.svg" alt="DOI"></a>
+  <a href="https://creativecommons.org/licenses/by/4.0/"><img src="https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg" alt="License: CC BY 4.0"></a>
   <img src="https://img.shields.io/github/stars/0x31337/morphine?style=social" alt="GitHub stars">
   <img src="https://img.shields.io/github/issues/0x31337/morphine" alt="GitHub issues">
 </p>
