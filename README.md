@@ -101,7 +101,7 @@ For installation, requirements, and usage walkthroughs, visit the [Documentation
 
 - [MORE Architecture Whitepaper (PDF)](https://github.com/user-attachments/files/21241161/whitepaper.pdf)  
 - Morphine CLI Setup Guide (soon)  
-- Example Projects & Tutorials (soon)
+- Full Documentation (soon, actively completing/fine-tuning it now)
 
 ---
 
