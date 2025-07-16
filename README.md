@@ -10,8 +10,8 @@ An elegant and secure PHP framework built on the MORE architecture — crafted f
 
 <p align="center">
   <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
-  <img src="https://img.shields.io/github/stars/your-org/morphine?style=social" alt="GitHub stars">
-  <img src="https://img.shields.io/github/issues/your-org/morphine" alt="GitHub issues">
+  <img src="https://img.shields.io/github/stars/0x31337/morphine?style=social" alt="GitHub stars">
+  <img src="https://img.shields.io/github/issues/0x31337/morphine" alt="GitHub issues">
 </p>
 
 ---
