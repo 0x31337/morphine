@@ -1,0 +1,20 @@
+{
+    "name": "morphine/morphine",
+    "description": "An elegant and secure PHP framework built on the MORE architecture - crafted for developers who value simplicity, structure, and control.",
+    "type": "framework",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Morphine\\Base\\CLI\\": "Base/CLI/",
+            "Morphine\\Base\\": "Base/",
+            "Morphine\\Application\\": "Application/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Kamel Zerki"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}

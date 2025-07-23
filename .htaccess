@@ -1,0 +1,5 @@
+RewriteEngine On
+RewriteCond %{REQUEST_URI} !\.(jpg|jpeg|png|jpeg|webp|svg|ico|gif|mp4|webm|pdf|doc|docx|ppt|pptx|avi|3gp|bmp|psd|mp3|aac|ogg|wav|zip|rar|7z|tar|gz)$
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /index.php [L]
