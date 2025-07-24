@@ -73,8 +73,7 @@ $ cd morphine
 $ composer install
 
 # 3. Run the Morphine CLI installer
-$ php Base/CLI/morph.php
-# Follow the interactive prompts to configure your database and project
+$ php Base/CLI/morph.php install
 ```
 
 ### Directory Structure
