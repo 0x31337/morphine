@@ -99,7 +99,7 @@ class Common
     public static function loadImg($imgName, $themeAbsoluteDir)
     {
         $themeDir = str_replace(AppGlobals::$AppEntryPoint, '', $themeAbsoluteDir);
-        return $themeDir . '/assets/' . \Morphine\Base\Engine\Assets::img[$imgName];
+        return $themeDir . '/assets/img/' . \Morphine\Base\Engine\Assets::img[$imgName];
     }
 
     public static function homeUrl()

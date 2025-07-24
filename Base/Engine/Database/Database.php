@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Morphine\Base\Engine\Database;
 
 use Morphine\Base\Engine\Database\DbFunctions;
+use Morphine\Base\Engine\Config;
 
 // use statements for any external dependencies (if needed)
 
@@ -24,10 +25,11 @@ class Database
 
     public static function set(): void
     {
+        $dbConfig = Config::get('database');
         self::$jasDB = mysqli_connect(
-            self::$morphDbHost,
-            self::$morphDbUser,
-            self::$morphDbPassword
+            $dbConfig['host'],
+            $dbConfig['user'],
+            $dbConfig['password']
         );
         if (!self::$jasDB) {
             throw new \RuntimeException(
@@ -35,7 +37,7 @@ class Database
                 "Please visit <a href='https://github.com/0x31337/morphine/wiki/Getting-Started#-installation'>The User-friendly quickstart</a> to find out what's missing."
             );
         }
-        mysqli_select_db(self::$jasDB, self::$morphDbName);
+        mysqli_select_db(self::$jasDB, $dbConfig['name']);
         mysqli_query(self::$jasDB, "SET NAMES 'utf8'");
     }
 

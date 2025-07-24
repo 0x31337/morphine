@@ -9,24 +9,24 @@ namespace Morphine\Base\Events;
 use Morphine\Base\Renders\Render;
 use Morphine\Base\Events\Pages;
 
-if(!class_exists(Display::class))
+class Display
 {
-    class Display
+    public static bool $asset_call_once;
+
+    public static function _render($requested_view, $req_data)
     {
-        static public bool $asset_call_once;
-        public static function _render($requested_view, $req_data)
-        {
-            self::$asset_call_once = false;
-            (function()use($requested_view, $req_data) {
-                return new Render($requested_view,
-                    new Pages(),
-                    $req_data);
-            })(
+        self::$asset_call_once = false;
+        (function () use ($requested_view, $req_data) {
+            return new Render(
                 $requested_view,
                 new Pages(),
                 $req_data
             );
-        }
+        })(
+            $requested_view,
+            new Pages(),
+            $req_data
+        );
     }
 
     // Core Dev note:

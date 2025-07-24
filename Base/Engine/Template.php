@@ -13,73 +13,57 @@
  *  > on how to create themes.
  */
 
-
 namespace Morphine\Base\Engine;
 
-if (!class_exists(Template::class))
+class Template
 {
-    class Template
+    private array $assigned_values;
+    private string $tpl;
+
+    public function __construct($path = '', $isHTML = false)
     {
-        private array $assigned_values;
-        private string $tpl;
-
-        public function __construct($path = '', $isHTML=false)
-        {
-            if($isHTML)
-            {
-                $this->tpl = $path;
-            }
-            elseif (!empty($path) && file_exists($path))
-            {
-                $this->tpl = file_get_contents($path);
-            }
-            else
-            {
-                die('<b>Template error: </b> Couldn\'t load the template file.');
-            }
+        if ($isHTML) {
+            $this->tpl = $path;
+        } elseif (!empty($path) && file_exists($path)) {
+            $this->tpl = file_get_contents($path);
+        } else {
+            die('<b>Template error: </b> Couldn\'t load the template file.');
         }
+    }
 
-        public function assign($search, $replace)
-        {
-            $this->assigned_values[strtoupper($search)] = $replace;
-        }
+    public function assign($search, $replace)
+    {
+        $this->assigned_values[strtoupper($search)] = $replace;
+    }
 
-        public function renderBuffer(string $search, string $path, array $buffer_assigned_values)
-        {
-            if (file_exists($path))
-            {
-                $buffer = file_get_contents($path);
-                if(!empty($buffer_assigned_values))
-                {
-                    foreach ($buffer_assigned_values as $_search => $_replace)
-                    {
-                        # strtr is 4 times faster than str_replace :D facts u know
-                        $buffer = strtr($buffer, ['{'.strtoupper($_search).'}' => $_replace]);
-                        //$buffer = str_replace('{'.strtoupper($_search).'}', $_replace, $buffer);
-                    }
-                }
-                $this->tpl = str_replace('['.strtoupper($search).']', $buffer, $this->tpl);
-                //unset($this->buffer);
-            }
-            else
-            {
-                die('<b>Template error: </b> Buffer file not found.');
-            }
-        }
-
-        public function show($return_template=false)
-        {
-            if (!empty($this->assigned_values))
-            {
-                foreach ($this->assigned_values as $search => $replace)
-                {
-                    $this->tpl = strtr($this->tpl, ['{'.$search.'}' => $replace]);
-                    //$this->tpl = str_replace('{'.$search.'}', $replace, $this->tpl);
+    public function renderBuffer(string $search, string $path, array $buffer_assigned_values)
+    {
+        if (file_exists($path)) {
+            $buffer = file_get_contents($path);
+            if (!empty($buffer_assigned_values)) {
+                foreach ($buffer_assigned_values as $_search => $_replace) {
+                    // strtr is 4 times faster than str_replace :D facts u know
+                    $buffer = strtr($buffer, ['{' . strtoupper($_search) . '}' => $_replace]);
+                    // $buffer = str_replace('{' . strtoupper($_search) . '}', $_replace, $buffer);
                 }
             }
-            if($return_template === true) return $this->tpl;
-            echo $this->tpl;
+            $this->tpl = str_replace('[' . strtoupper($search) . ']', $buffer, $this->tpl);
+            // unset($this->buffer);
+        } else {
+            die('<b>Template error: </b> Buffer file not found.');
         }
+    }
+
+    public function show($return_template = false)
+    {
+        if (!empty($this->assigned_values)) {
+            foreach ($this->assigned_values as $search => $replace) {
+                $this->tpl = strtr($this->tpl, ['{' . $search . '}' => $replace]);
+                // $this->tpl = str_replace('{' . $search . '}', $replace, $this->tpl);
+            }
+        }
+        if ($return_template === true) return $this->tpl;
+        echo $this->tpl;
     }
 }
 

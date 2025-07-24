@@ -8,6 +8,7 @@ use ZipArchive;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Morphine\Base\Events\Dispatcher\Channels;
+use Morphine\Base\Engine\Config;
 
 class CliUtils
 {
@@ -57,12 +58,12 @@ class CliUtils
     {
         self::printInfo('Morphine framework installation process...');
         self::printQuestion('Enter your MySQL database server address :');
-        $server_addr = self::gets();
+        $server_addr = trim(self::gets());
         self::printQuestion('Enter your MySQL username : ');
-        $user_name = self::gets();
+        $user_name = trim(self::gets());
         insert_password:
         self::printQuestion('Enter your MySQL Password : ');
-        $pass_word = self::gets();
+        $pass_word = trim(self::gets());
         if($pass_word == $user_name)
         {
             self::printWarning("You can't use the same string as username and password ! ");
@@ -70,7 +71,7 @@ class CliUtils
         }
         insert_dbname:
         self::printQuestion('Enter the database name you wish to use : ');
-        $db_name = self::gets();
+        $db_name = trim(self::gets());
         if($db_name == $user_name)
         {
             self::printWarning("You can't use the same string as username and database name for security reasons !");
@@ -82,31 +83,37 @@ class CliUtils
             goto insert_dbname;
         }
 
-        $dbPath = self::getProjectRoot() . '/Base/Engine/Database/Database.php';
-        if(file_exists($dbPath)) {
-            $databasefile = file_get_contents($dbPath);
-        } else {
-            print($dbPath . "\n");
-            self::printWarning("can't find database files, Morphine filesystem is corrupt, please check with original github clone");
-            self::printWarning("|__ ( please note that morph shell should be inside /base/cli/ directory ) ");
-            self::printFail('Unable to install Morphine framework.');
-            return false;
+        // Write to .env file only
+        $env_path = self::getProjectRoot() . '/.env';
+        $env_content = "DB_HOST=$server_addr\nDB_NAME=$db_name\nDB_USER=$user_name\nDB_PASS=$pass_word\nDOWNLOAD_ALLOWED_DIRS=/uploads,/public_files\n";
+        file_put_contents($env_path, $env_content);
+        self::printSuccess('Database credentials saved to .env.');
+
+        // Try connecting to the DB, create if not exists
+        $mysqli = @new \mysqli($server_addr, $user_name, $pass_word);
+        if ($mysqli->connect_errno) {
+            self::printFail("Failed to connect to MySQL server: " . $mysqli->connect_error);
+            return;
         }
+        if (!$mysqli->select_db($db_name)) {
+            self::printWarning("Database '$db_name' does not exist. Attempting to create it...");
+            if (!$mysqli->query("CREATE DATABASE `$db_name` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")) {
+                self::printFail("Failed to create database '$db_name': " . $mysqli->error);
+                return;
+            } else {
+                self::printSuccess("Database '$db_name' created successfully.");
+            }
+        }
+        $mysqli->close();
 
-        // Trim all user input to avoid whitespace and \r\n issues
-        $server_addr = trim($server_addr);
-        $db_name = trim($db_name);
-        $user_name = trim($user_name);
-        $pass_word = trim($pass_word);
-
-        $output_dbfile = self::update_dbfile($databasefile, $server_addr, $db_name, $user_name, $pass_word);
-        fwrite(fopen($dbPath, 'w'), $output_dbfile);
-        self::printSuccess('Database configurations finished with success .');
-
-        self::tblsetup();
-        self::printSuccess('Tables created, default theme app_v1 set up ..');
-
-        self::printSuccess('Installation process finished with success.');
+        // Now proceed with table setup
+        try {
+            self::tblsetup();
+            self::printSuccess('Tables created, default theme app_v1 set up ..');
+            self::printSuccess('Installation process finished with success.');
+        } catch (\Throwable $e) {
+            self::printFail("Error during table setup: " . $e->getMessage());
+        }
     }
 
     public static function update_dbfile($db_sourcefile, $server_addr, $db_name, $user_name, $pass_word)
@@ -898,7 +905,8 @@ class CliUtils
         $themesPath = "$basePath/Application/Themes";
         $broken = [];
 
-        if (!file_exists($channelFile)) {
+        $channelFile = realpath(self::getProjectRoot() . '/Base/Events/Dispatcher/Channels.php');
+        if (!$channelFile || !file_exists($channelFile)) {
             self::printFail("Channels.php not found.");
             return;
         }
@@ -986,54 +994,78 @@ class CliUtils
         self::printInfo("Trace an Operation");
 
         $inputOp = trim($inputOp);
-
         $opLower = strtolower($inputOp);
-        $operationFile = realpath(self::getProjectRoot() . '/Base/Events/Operation.php');
+        $usages = [];
+        $found = false;
+        $methodFound = null;
+        $classFound = null;
+        $isFrameworkOp = false;
 
-        if (!$operationFile || !file_exists($operationFile)) {
-            self::printFail("Operation.php not found.");
-            return;
-        }
-
-        require_once self::getProjectRoot() . '/Base/Events/events.php';
-        require_once $operationFile;
-
-        if (!class_exists(\Morphine\Base\Events\Operation::class)) {
-            self::printFail("Class Morphine\\Base\\Events\\Operation not found in Operation.php.");
-            return;
-        }
-
-        $opMethods = get_class_methods(\Morphine\Base\Events\Operation::class);
-        $matchedMethod = null;
-
-        foreach ($opMethods as $method) {
-            if (strtolower($method) === $opLower) {
-                $matchedMethod = $method; // get the real case-sensitive name
-                break;
+        // Parse input: ClassName::method or just method
+        if (strpos($inputOp, '::') !== false) {
+            list($class, $method) = explode('::', $inputOp, 2);
+            if ($class === 'Utils') {
+                $fqcn = '\\Morphine\\Base\\Operations\\Utils';
+                if (method_exists($fqcn, $method)) {
+                    $found = true;
+                    $methodFound = $method;
+                    $classFound = $fqcn;
+                    $isFrameworkOp = true;
+                }
+            } else {
+                $fqcn = '\\Morphine\\Application\\Operations\\' . $class;
+                if (class_exists($fqcn) && method_exists($fqcn, $method)) {
+                    $found = true;
+                    $methodFound = $method;
+                    $classFound = $fqcn;
+                }
+            }
+        } else {
+            // Try framework utils first
+            $fqcn = '\\Morphine\\Base\\Operations\\Utils';
+            if (method_exists($fqcn, $inputOp)) {
+                $found = true;
+                $methodFound = $inputOp;
+                $classFound = $fqcn;
+                $isFrameworkOp = true;
+            } else {
+                // Try all user operation classes
+                $appOpsDir = self::getProjectRoot() . '/Application/Operations/';
+                foreach (glob($appOpsDir . '*.php') as $file) {
+                    $class = basename($file, '.php');
+                    $fqcn = '\\Morphine\\Application\\Operations\\' . $class;
+                    if (class_exists($fqcn) && method_exists($fqcn, $inputOp)) {
+                        $found = true;
+                        $methodFound = $inputOp;
+                        $classFound = $fqcn;
+                        break;
+                    }
+                }
             }
         }
 
-        if (!$matchedMethod) {
-            self::printWarning("No method named '$inputOp' found in Operation.php.");
+        if (!$found) {
+            self::printWarning("No static method named '$inputOp' found in framework or user operations.");
         } else {
-            self::printSuccess("Found operation: $matchedMethod in Operation.php");
+            self::printSuccess("Found operation: $classFound::$methodFound");
         }
 
-        $channelFile = realpath(self::getProjectRoot() . '/Base/Events/Dispatcher/Channels.php');
+        // Find usages in channels
+        $channelFile = realpath(self::getProjectRoot() . '/Application/config/channels.php');
         if (!file_exists($channelFile)) {
-            self::printFail("Channels.php not found.");
+            self::printFail("channels.php not found in Application/config.");
             return;
         }
-
-        \Morphine\Base\Events\Dispatcher\Channels::init();
-        $channels = \Morphine\Base\Events\Dispatcher\Channels::$channels;
-
-        $usages = [];
-
+        $channels = require $channelFile;
         foreach ($channels as $channel => $surfaces) {
             foreach ($surfaces as $surface => $data) {
-                if (isset($data['operation']) && strtolower($data['operation']) === $opLower) {
-                    $usages[] = [$channel, $surface];
+                if (isset($data['operation'])) {
+                    $op = strtolower($data['operation']);
+                    if ($op === $opLower) {
+                        $usages[] = [$channel, $surface];
+                    } else if ($found && strtolower($data['operation']) === strtolower(($isFrameworkOp ? 'Utils::' : (isset($class) ? $class . '::' : '')) . $methodFound)) {
+                        $usages[] = [$channel, $surface];
+                    }
                 }
             }
         }
