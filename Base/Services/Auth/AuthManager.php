@@ -20,7 +20,7 @@ class AuthManager
         if (file_exists($configFile)) {
             self::$config = require $configFile;
         } else {
-            self::$config = [ 'providers' => [], 'session_key' => 'auth_user', 'user_model' => '\\Application\\Models\\User' ];
+            self::$config = [ 'providers' => [], 'session_key' => 'auth_user', 'user_model' => '\\Application\\Models\\UserModel' ];
         }
         self::$sessionKey = self::$config['session_key'] ?? 'auth_user';
         // Instantiate providers

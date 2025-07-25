@@ -10,7 +10,7 @@ class Config
         if ($name === 'database') {
             $envPath = dirname(__DIR__, 2) . '/.env';
             if (!file_exists($envPath)) {
-                // User-friendly message if .env is missing
+                // UserModel-friendly message if .env is missing
                 if (php_sapi_name() === 'cli') {
                     fwrite(STDERR, "\n[ERROR] .env file not found at project root.\nPlease run the install command (php morph install) or create one manually.\n\n");
                     exit(1);

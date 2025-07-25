@@ -61,7 +61,7 @@ class LocalProvider implements AuthProviderInterface
 
     public function getUser(): ?array
     {
-        // User data fetching is up to the user in their own models/operations
+        // UserModel data fetching is up to the user in their own models/operations
         return null;
     }
 

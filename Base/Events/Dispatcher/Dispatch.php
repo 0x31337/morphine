@@ -36,8 +36,15 @@ class Dispatch extends Events
             parent::$req_data['event'] = parent::$event;
             $this->dispatch();
         } else {
-            $this->check_redirection($this->custom_display);
-            \Morphine\Base\Events\Display::_render($this->custom_display, parent::$req_data);
+            $display = $this->custom_display ?? '';
+            if ($display) {
+                $this->check_redirection($display);
+                \Morphine\Base\Events\Display::_render($display, parent::$req_data);
+            } else {
+                // Output the actual exception code if available
+                $exception = parent::$req_data['exception'] ?? 'UNHANDLED_SURFACE_EXCEPTION';
+                die('UNHANDLED_SURFACE_EXCEPTION: ' . $exception);
+            }
         }
     }
 
@@ -64,32 +71,47 @@ class Dispatch extends Events
 
     private function executeOperation($op, $req_data)
     {
+        $result = null;
         if (strpos($op, '::') !== false) {
             list($class, $method) = explode('::', $op, 2);
             if ($class === 'Utils') {
-                $fqcn = '\\Morphine\\Base\\Operations\\Utils';
+                $fqcn = '\Morphine\Base\Operations\Utils';
                 if (method_exists($fqcn, $method)) {
-                    return $fqcn::$method($req_data);
+                    $result = $fqcn::$method($req_data);
                 }
             } else {
-                $fqcn = '\\Morphine\\Application\\Operations\\' . $class;
+                $fqcn = "\\Morphine\\Application\\Operations\\$class";
                 if (class_exists($fqcn)) {
                     $instance = new $fqcn();
                     if (method_exists($instance, $method)) {
-                        return $instance->$method($req_data);
+                        $result = $instance->$method($req_data);
                     }
                 }
             }
-            // Not found
-            throw new \Exception("Operation callback '{$op}' not found (class or method missing).");
-        } else {
-            // Default: try static framework op
-            $fqcn = '\\Morphine\\Base\\Operations\\Utils';
-            if (method_exists($fqcn, $op)) {
-                return $fqcn::$op($req_data);
+            if (!isset($result)) {
+                die('UNHANDLED_OPERATION_EXCEPTION: Operation callback ' . $op . ' not found (class or method missing).');
             }
-            throw new \Exception("Operation callback '{$op}' not found in framework utils.");
+        } else {
+            $fqcn = '\Morphine\Base\Operations\Utils';
+            if (method_exists($fqcn, $op)) {
+                $result = $fqcn::$op($req_data);
+            } else {
+                die('UNHANDLED_OPERATION_EXCEPTION: Operation callback ' . $op . ' not found in framework utils.');
+            }
         }
+        // Dynamic exception handling: if result is a string and matches a surface exception key
+        if (is_string($result)) {
+            if (isset($this->surface->exception[$result])) {
+                $this->exception($result);
+                $this->check_redirection($this->custom_display);
+                \Morphine\Base\Events\Display::_render($this->custom_display, parent::$req_data);
+                // Stop further processing
+                exit;
+            } else {
+                die('UNHANDLED_SURFACE_EXCEPTION: ' . $result);
+            }
+        }
+        return $result;
     }
 
     private function fetch_channel(string $target): void
@@ -174,18 +196,26 @@ class Dispatch extends Events
     private function access_control_validation($surface_access_control_array)
     {
         if (self::$roleClosures === null) {
-            $rolesPath = __DIR__ . '/../../../../Application/config/roles.php';
+            // Robust, case-insensitive path resolution for roles.php
+            $rolesPath = dirname(__DIR__, 3) . '/Application/config/roles.php';
             if (file_exists($rolesPath)) {
-                self::$roleClosures = require $rolesPath;
+                // Load and normalize all keys to lowercase for case-insensitive matching
+                $roles = require $rolesPath;
+                if (is_array($roles)) {
+                    self::$roleClosures = array_change_key_case($roles, CASE_LOWER);
+                } else {
+                    self::$roleClosures = [];
+                }
             } else {
                 self::$roleClosures = [];
             }
         }
         if (isset($surface_access_control_array) && $surface_access_control_array !== false) {
             foreach ($surface_access_control_array as $access) {
-                $access = strtolower($access);
-                if (isset(self::$roleClosures[$access]) && is_callable(self::$roleClosures[$access])) {
-                    if (!call_user_func(self::$roleClosures[$access])) {
+                $access_lc = strtolower($access); // Always lowercase for lookup
+                if (isset(self::$roleClosures[$access_lc]) && is_callable(self::$roleClosures[$access_lc])) {
+                    $result = call_user_func(self::$roleClosures[$access_lc]);
+                    if (!$result) {
                         return false;
                     }
                 } else {
@@ -238,13 +268,10 @@ class Dispatch extends Events
 
     private function exception($e)
     {
-        switch ($e) {
-            case 'E_RULES_FAILED':
-            case 'E_REQUIRED_PARAM_NOT_FOUND':
-            case 'E_ACCESS_CONTROL_FAILURE':
-                $this->custom_display = $this->surface->exception[$e];
-                parent::$req_data['exception'] = $e;
-                break;
+        parent::$req_data['exception'] = $e;
+        // Only set custom_display if a mapping exists
+        if (isset($this->surface->exception[$e])) {
+            $this->custom_display = $this->surface->exception[$e];
         }
     }
 

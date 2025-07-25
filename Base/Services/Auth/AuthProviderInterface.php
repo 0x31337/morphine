@@ -9,14 +9,14 @@ interface AuthProviderInterface
     /**
      * Attempt to authenticate a user with the given credentials.
      * @param array $credentials
-     * @return array|string User data array on success, or error code string
+     * @return array|string UserModel data array on success, or error code string
      */
     public function authenticate(array $credentials);
 
     /**
      * Register a new user (if supported by provider).
      * @param array $data
-     * @return array|string User data array on success, or error code string
+     * @return array|string UserModel data array on success, or error code string
      */
     public function register(array $data);
 

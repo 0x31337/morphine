@@ -34,7 +34,7 @@ class Database
         if (!self::$jasDB) {
             throw new \RuntimeException(
                 "Unable to connect to the database. Did you <i>install</i> Morphine? " .
-                "Please visit <a href='https://github.com/0x31337/morphine/wiki/Getting-Started#-installation'>The User-friendly quickstart</a> to find out what's missing."
+                "Please visit <a href='https://github.com/0x31337/morphine/wiki/Getting-Started#-installation'>The UserModel-friendly quickstart</a> to find out what's missing."
             );
         }
         mysqli_select_db(self::$jasDB, $dbConfig['name']);

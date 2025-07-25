@@ -21,5 +21,9 @@ return [
     'trueOrFalse' => function($param) {
         return trim(strtolower($param)) == 'true' || trim(strtolower($param)) == 'false';
     },
+    // Email validation rule
+    'email' => function($value) {
+        return filter_var($value, FILTER_VALIDATE_EMAIL) !== false;
+    },
     // Add more custom rules as needed
 ]; 
